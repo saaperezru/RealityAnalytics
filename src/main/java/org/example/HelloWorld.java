@@ -1,31 +1,39 @@
 package org.example;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
-public class HelloWorld extends AbstractHandler {
-	public void handle(String target, Request baseRequest,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		response.setContentType("text/html;charset=utf-8");
-		response.setStatus(HttpServletResponse.SC_OK);
-		baseRequest.setHandled(true);
-		response.getWriter().println("<h1>Hello World</h1>");
-	}
+import com.sun.jersey.spi.container.servlet.ServletContainer;
 
+public class HelloWorld {
 	public static void main(String[] args) throws Exception {
-		Server server = new Server(8080);
-		server.setHandler(new HelloWorld());
 
-		server.start();
-		server.join();
+		Server server = new Server(8080);
+
+		ServletContextHandler context = new ServletContextHandler(
+				ServletContextHandler.NO_SESSIONS);
+		context.setContextPath("/");
+		server.setHandler(context);
+
+		ServletHolder jerseyServlet = context.addServlet(
+				ServletContainer.class, "/webapi/*");
+		jerseyServlet.setInitOrder(1);
+		jerseyServlet.setInitParameter(
+				"com.sun.jersey.config.property.packages", "tabloide.web");
+		
+		ServletHolder staticServlet = context.addServlet(DefaultServlet.class,
+				"/*");
+		staticServlet.setInitParameter("resourceBase", "src/main/java");
+		staticServlet.setInitParameter("pathInfoOnly", "true");
+
+		try {
+			server.start();
+			server.join();
+		} catch (Throwable t) {
+			t.printStackTrace(System.err);
+		}
 	}
 
 }

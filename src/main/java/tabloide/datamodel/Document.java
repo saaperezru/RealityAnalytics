@@ -12,8 +12,9 @@ public class Document {
     private Source source;
     private Map<String, Extractor> propertiesExtractorsMap = new HashMap<String, Extractor>();
 
-    public Document(String content) {
+    public Document(String content, Source source) {
         this.content = content;
+        this.source = source;
     }
 
     public String getContent() {

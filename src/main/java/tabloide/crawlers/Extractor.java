@@ -1,12 +1,12 @@
 package tabloide.crawlers;
 
 import tabloide.datamodel.Document;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public interface Extractor {
 
-    public ArrayList<String> getPropertiesNames();
+    public List<String> getPropertiesNames();
 
     public Map<String, Object> getAllProperties(Document doc);
 

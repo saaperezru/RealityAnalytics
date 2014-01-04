@@ -1,10 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tabloide.crawlers.implementations;
-
-import java.util.List;
 
 /**
  *
@@ -12,13 +6,12 @@ import java.util.List;
  */
 public class ExtractorRSSChannelInfo {
 
-    static String getSourceName(String rawXML) {
-
-        return null;
+    public static String getSourceName(String rawXML) {
+        String[] titles = org.apache.commons.lang3.StringUtils.substringsBetween(rawXML, "<title>", "</title>");
+        return titles[1];
     }
 
-    static List<String> getXMLItemList(String rawXML) {
-
-        return null;
+    public static String[] getXMLItemList(String rawXML) {
+        return org.apache.commons.lang3.StringUtils.substringsBetween(rawXML, "<item>", "</item>");
     }
 }

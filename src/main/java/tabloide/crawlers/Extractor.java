@@ -1,5 +1,6 @@
 package tabloide.crawlers;
 
+import tabloide.datamodel.Document;
 import java.util.ArrayList;
 import java.util.Map;
 

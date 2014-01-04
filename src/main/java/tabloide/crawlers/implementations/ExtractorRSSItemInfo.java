@@ -9,7 +9,7 @@ import tabloide.datamodel.Document;
  *
  * @author Camilo
  */
-public class ExtractorRSSItemInfo implements Extractor{
+public class ExtractorRSSItemInfo implements Extractor {
 
     @Override
     public ArrayList<String> getPropertiesNames() {
@@ -25,5 +25,4 @@ public class ExtractorRSSItemInfo implements Extractor{
     public Object getProperty(String name, Document doc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }

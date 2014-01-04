@@ -6,21 +6,19 @@ package tabloide.crawlers.implementations;
 
 import java.util.List;
 
-
 /**
  *
  * @author Camilo
  */
 public class ExtractorRSSChannelInfo {
-    
-    static String getSourceName(String rawXML){
-        
+
+    static String getSourceName(String rawXML) {
+
         return null;
     }
-    
-    static List<String> getXMLItemList(String rawXML){
-        
+
+    static List<String> getXMLItemList(String rawXML) {
+
         return null;
     }
-    
 }

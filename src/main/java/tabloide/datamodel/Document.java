@@ -8,8 +8,29 @@ import tabloide.crawlers.Extractor;
 
 public class Document {
 
-    String content;
-    Map<String, Extractor> propertiesExtractorsMap = new HashMap<String, Extractor>();
+    private String content;
+    private Source source;
+    private Map<String, Extractor> propertiesExtractorsMap = new HashMap<String, Extractor>();
+
+    public Document(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
 
     public void addExtractor(Extractor newExtractor) {
         for (String name : newExtractor.getPropertiesNames()) {

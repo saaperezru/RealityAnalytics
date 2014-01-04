@@ -22,7 +22,7 @@ public class HelloWorld {
 		jerseyServlet.setInitOrder(1);
 		jerseyServlet.setInitParameter(
 				"com.sun.jersey.config.property.packages", "tabloide.web");
-		
+
 		ServletHolder staticServlet = context.addServlet(DefaultServlet.class,
 				"/*");
 		staticServlet.setInitParameter("resourceBase", "src/main/java");
@@ -34,6 +34,8 @@ public class HelloWorld {
 		} catch (Throwable t) {
 			t.printStackTrace(System.err);
 		}
-	}
 
+		server.start();
+		server.join();
+	}
 }

@@ -4,14 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import tabloide.crawlers.Crawler;
+import tabloide.crawlers.Extractor;
 import tabloide.datamodel.Categories;
 import tabloide.datamodel.Document;
 import tabloide.datamodel.Source;
@@ -23,6 +22,11 @@ import tabloide.datamodel.Source;
 public class CrawlerRSSElTiempo implements Crawler {
 
     private String urlToCrawl;
+    final private static List<Extractor> extractors = new ArrayList<>();
+
+    static {
+        extractors.add(new ExtractorRSSItemInfo());
+    }
 
     public CrawlerRSSElTiempo(String url) {
         urlToCrawl = url;
@@ -34,11 +38,13 @@ public class CrawlerRSSElTiempo implements Crawler {
 
         Source source = new Source(ExtractorRSSChannelInfo.getSourceName(rawXML), Categories.PRENSA);
         String[] xmlItemList = ExtractorRSSChannelInfo.getXMLItemList(rawXML);
-        
-        ArrayList<Document> documents=new ArrayList<Document>();
-        
-        for(String item:xmlItemList){
-            documents.add(new Document(item, source));
+
+        ArrayList<Document> documents = new ArrayList<Document>();
+
+        for (String item : xmlItemList) {
+            Document doc = new Document(item, source);
+            doc.addExtractors(extractors);
+            documents.add(doc);
         }
 
         return documents;
@@ -60,11 +66,6 @@ public class CrawlerRSSElTiempo implements Crawler {
                 result += line;
             }
             rd.close();
-
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(CrawlerRSSElTiempo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ProtocolException ex) {
-            Logger.getLogger(CrawlerRSSElTiempo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(CrawlerRSSElTiempo.class.getName()).log(Level.SEVERE, null, ex);
         }

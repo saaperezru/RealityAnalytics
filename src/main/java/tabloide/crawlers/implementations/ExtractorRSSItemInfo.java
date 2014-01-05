@@ -16,7 +16,7 @@ public class ExtractorRSSItemInfo implements Extractor {
 
     private ArrayList<String> propertiesNames = null;
 
-    @Override
+    
     public List<String> getPropertiesNames() {
         if (propertiesNames == null) {
 
@@ -31,7 +31,7 @@ public class ExtractorRSSItemInfo implements Extractor {
         return propertiesNames;
     }
 
-    @Override
+    
     public Map<String, Object> getAllProperties(Document doc) {
 
         Map<String, Object> allProperties = new HashMap<String,Object>();
@@ -48,7 +48,7 @@ public class ExtractorRSSItemInfo implements Extractor {
         return allProperties;
     }
 
-    @Override
+    
     public Object getProperty(String name, Document doc) {
         String rawdoc = doc.getContent();
         String[] titles = org.apache.commons.lang3.StringUtils.substringsBetween(rawdoc, "<" + name + ">", "</" + name + ">");

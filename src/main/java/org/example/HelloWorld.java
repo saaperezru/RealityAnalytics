@@ -34,8 +34,5 @@ public class HelloWorld {
 		} catch (Throwable t) {
 			t.printStackTrace(System.err);
 		}
-
-		server.start();
-		server.join();
 	}
 }

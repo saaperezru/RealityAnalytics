@@ -3,6 +3,7 @@ package tabloide.datamodel;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import tabloide.crawlers.Extractor;
@@ -79,4 +80,11 @@ public class Document {
 		}
 		return this.propertiesExtractorsMap.get(name).getProperty(name, this);
 	}
+
+	public void addExtractors(List<Extractor> extractors) {
+		for (Extractor ex : extractors) {
+			addExtractor(ex);
+		}
+	}
+
 }

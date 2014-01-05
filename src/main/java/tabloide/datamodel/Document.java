@@ -4,64 +4,79 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
 import tabloide.crawlers.Extractor;
 
 public class Document {
 
-    private String content;
-    private Source source;
-    private Map<String, Extractor> propertiesExtractorsMap = new HashMap<String, Extractor>();
+	private Map<String, String> contents;
+	private Source source;
+	private Map<String, Extractor> propertiesExtractorsMap = new HashMap<String, Extractor>();
 
-    public Document(String content, Source source) {
-        this.content = content;
-        this.source = source;
-    }
+	public Document(Map<String, String> content, Source source) {
+		this.contents = content;
+		this.source = source;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public Document(String content, Source source) {
+		this.contents = new HashMap();
+		this.contents.put("raw", content);
+		this.source = source;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public String getContent() {
+		StringBuilder sb = new StringBuilder();
+		for (String s : this.contents.values())
+			sb.append(s);
+		return sb.toString();
+	}
 
-    public Source getSource() {
-        return source;
-    }
+	public Map<String, String> getContents() {
+		return contents;
+	}
 
-    public void setSource(Source source) {
-        this.source = source;
-    }
+	public void setContent(String content) {
+		this.contents.put("raw", content);
+	}
 
-    public void addExtractor(Extractor newExtractor) {
-        for (String name : newExtractor.getPropertiesNames()) {
-            this.propertiesExtractorsMap.put(name, newExtractor);
-        }
-    }
+	public Source getSource() {
+		return source;
+	}
 
-    public Collection<String> getPropertiesNames() {
-        return this.propertiesExtractorsMap.keySet();
-    }
+	public void setSource(Source source) {
+		this.source = source;
+	}
 
-    public Map<String, Object> getProperties() {
-        HashSet<Extractor> visitedExtractors = new HashSet<Extractor>();
-        HashMap<String, Object> ret = new HashMap<String, Object>();
-        for (Extractor e : this.propertiesExtractorsMap.values()) {
-            if (visitedExtractors.contains(e)) {
-                continue;
-            } else {
-                visitedExtractors.add(e);
-                ret.putAll(e.getAllProperties(this));
-            }
-        }
-        return ret;
+	public void addExtractor(Extractor newExtractor) {
+		for (String name : newExtractor.getPropertiesNames()) {
+			this.propertiesExtractorsMap.put(name, newExtractor);
+		}
+	}
 
-    }
+	public Collection<String> getPropertiesNames() {
+		return this.propertiesExtractorsMap.keySet();
+	}
 
-    public Object getProperty(String name) throws Exception {
-        if (!propertiesExtractorsMap.containsKey(name)) {
-            throw new Exception("The property " + name + " does not exist for this document");
-        }
-        return this.propertiesExtractorsMap.get(name).getProperty(name, this);
-    }
+	public Map<String, Object> getProperties() {
+		HashSet<Extractor> visitedExtractors = new HashSet<Extractor>();
+		HashMap<String, Object> ret = new HashMap<String, Object>();
+		for (Extractor e : this.propertiesExtractorsMap.values()) {
+			if (visitedExtractors.contains(e)) {
+				continue;
+			} else {
+				visitedExtractors.add(e);
+				ret.putAll(e.getAllProperties(this));
+			}
+		}
+		return ret;
+
+	}
+
+	public Object getProperty(String name) throws Exception {
+		if (!propertiesExtractorsMap.containsKey(name)) {
+			throw new Exception("The property " + name
+					+ " does not exist for this document");
+		}
+		return this.propertiesExtractorsMap.get(name).getProperty(name, this);
+	}
 }
